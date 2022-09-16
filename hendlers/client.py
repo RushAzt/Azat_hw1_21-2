@@ -7,7 +7,7 @@ from asyncio import sleep
 
 #игра с ботом
 async def dice(message: types.Message):
-    await bot.send_message(message.from_user.id, f"Привет {message.from_user.full_name}!\nНачинаем игру!!!")
+    await bot.send_message(message.from_user.id, f"Привет {message.from_user.full_name}!\nНачинаем игру!!!\n1-BOT\n2-Вы")
     await sleep(1)
 
     bot_data = await bot.send_dice(message.from_user.id)
@@ -81,6 +81,10 @@ async def quiz_1(message: types.Message):
         open_period=10,
         reply_markup=markup
     )
+
+async def help_command(message: types.Message):
+    await message.answer(f"Разбирайся сам!")
+
 # Вызов
 def register_handlers_clien(dp: Dispatcher):
     dp.register_message_handler(bot_mem, commands=["mem"])
@@ -88,3 +92,4 @@ def register_handlers_clien(dp: Dispatcher):
     dp.register_message_handler(quiz_1, commands=["quiz"])
     dp.register_message_handler(pin, commands=["pin"], commands_prefix="/!")
     dp.register_message_handler(dice, commands=['dice'])
+    dp.register_message_handler(help_command, commands=['help'])
