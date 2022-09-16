@@ -2,7 +2,7 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from config import bot
+from config import bot, ADMIN
 from keyboards.client_kb import cancel_markup
 
 class FSMAdmin(StatesGroup):
@@ -13,13 +13,14 @@ class FSMAdmin(StatesGroup):
 
 
 async def fsm_start(message: types.Message):
-    if message.chat.type == "private":
+    if message.chat.type == "private" or message.from_user.id == ADMIN:
         await FSMAdmin.photo.set()
         await message.answer(f"Здравствуйте {message.from_user.first_name} "
                              f"скинь фотку еды...",
                              reply_markup=cancel_markup)
     else:
         await message.answer("Пиши в личку!")
+        await message.answer("Вы не администратор!")
 
 
 async def load_photo(message: types.Message, state: FSMContext):
