@@ -3,7 +3,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from config import dp, bot
 import random
 from asyncio import sleep
-
+from data_base.bot_db import sql_command_random
 
 #игра с ботом
 async def dice(message: types.Message):
@@ -49,12 +49,7 @@ async def bot_mem(message: types.Message):
 # @dp.message_handler(commands=["start"])
 async def send_command(message: types.Message):
     await message.answer(f"Приветствую тебя {message.from_user.first_name}\n"
-                         f"Это лучший бот когда-либо ты видел!\n"
-                         f"Команды и итд:\n"
-                         f"/quiz - викторины\n"
-                         f"/mem - мемы\n"
-                         f"/dice - игра с ботом|\n"
-                         f"game - играть с emoji (написать начале слово!!!)")
+                         f"Кандайсын эу?")
 
 # Викторина
 # @dp.message_handler(commands=["quiz"])
@@ -85,6 +80,10 @@ async def quiz_1(message: types.Message):
 async def help_command(message: types.Message):
     await message.answer(f"Разбирайся сам!")
 
+async def show_random_menu(message: types.Message):
+    await sql_command_random(message)
+
+
 # Вызов
 def register_handlers_clien(dp: Dispatcher):
     dp.register_message_handler(bot_mem, commands=["mem"])
@@ -93,3 +92,4 @@ def register_handlers_clien(dp: Dispatcher):
     dp.register_message_handler(pin, commands=["pin"], commands_prefix="/!")
     dp.register_message_handler(dice, commands=['dice'])
     dp.register_message_handler(help_command, commands=['help'])
+    dp.register_message_handler(show_random_menu, commands=['get'])
