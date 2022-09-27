@@ -4,6 +4,7 @@ from config import dp, bot
 import random
 from asyncio import sleep
 from data_base.bot_db import sql_command_random
+from parser import news
 
 #игра с ботом
 async def dice(message: types.Message):
@@ -83,6 +84,17 @@ async def help_command(message: types.Message):
 async def show_random_menu(message: types.Message):
     await sql_command_random(message)
 
+async def parser_news(message: types.Message):
+    data = news.parser()
+    for item in data:
+        await bot.send_message(
+            message.from_user.id,
+            f"{item['time']}\n\n"
+            f"{item['title']}\n"
+            f"{item['desc']}\n\n"
+            f"{item['link']}"
+        )
+
 
 # Вызов
 def register_handlers_clien(dp: Dispatcher):
@@ -93,3 +105,4 @@ def register_handlers_clien(dp: Dispatcher):
     dp.register_message_handler(dice, commands=['dice'])
     dp.register_message_handler(help_command, commands=['help'])
     dp.register_message_handler(show_random_menu, commands=['get'])
+    dp.register_message_handler(parser_news, commands=['news'])
