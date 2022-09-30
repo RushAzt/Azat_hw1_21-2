@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup as BS
 
 URL = "https://www.securitylab.ru/news/"
 
@@ -10,19 +10,19 @@ HEADERS = {
 
 
 def get_html(url, params=''):
-    req = requests.get(url, headers=HEADERS, params=params)
+    req = requests.get(url=url, headers=HEADERS, params=params)
     return req
 
 
 def get_data(html):
-    soup = BeautifulSoup(html, "html.parser")
+    soup = BS(html, "html.parser")
     items = soup.find_all('a', class_='article-card inline-card')
     news = []
     for item in items:
         news.append({
             'title': item.find("h2", class_='article-card-title').getText(),
             'desc': item.find("p").getText(),
-            'link': "https://www.securitylab.ru/news/" + item.get('href'),
+            'link': "https://www.securitylab.ru" + item.get('href'),
             'time': item.find("time").getText(),
 
         })
@@ -32,12 +32,12 @@ def get_data(html):
 def parser():
     html = get_html(URL)
     if html.status_code == 200:
-        answer = []
-        for page in range(1, 2):
+        answers = []
+        for page in range(1, 3):
             html = get_html(f"{URL}page1_{page}.php")
-            current_page = get_data(html)
-            answer.extend(get_data(current_page))
-        return answer
+            current_page = get_data(html.text)
+            answers.extend(current_page)
+        return answers
     else:
         raise Exception("Error in parser!")
 

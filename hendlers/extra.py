@@ -15,7 +15,7 @@ async def game(message: types.Message):
     else:
         if message.text.isnumeric():
             if len(message.text) > 3:
-                await message.answer('я не буду это умножать мне лень')
+                await message.answer('сам умножай!, для чего придумали калькулятор😡')
             else:
                 await message.answer(int(message.text) ** 2)
         else:

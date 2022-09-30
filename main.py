@@ -2,7 +2,7 @@ import asyncio
 from aiogram.utils import executor
 from config import dp
 import logging
-from hendlers import client, callback, extra, fsmAdminMenu, notification
+from hendlers import client, callback, extra, fsmAdminMenu, notification, inline
 from data_base.bot_db import sql_create
 
 async def on_startup(_):
@@ -12,8 +12,8 @@ async def on_startup(_):
 client.register_handlers_clien(dp)
 callback.register_hanflers_callback(dp)
 fsmAdminMenu.register_handlers_fsm_admin(dp)
+inline.register_inline_handler(dp)
 notification.register_handler_notification(dp)
-
 
 
 extra.register_handlers_extra(dp)
